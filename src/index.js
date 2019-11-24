@@ -2,30 +2,58 @@ import {Howl, Howler} from 'howler';
 import BubbleChart from './chart.js';
 
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+var oscillator;
+
+
+class FrequencyNode {
+  constructor(frequency) {
+    this.frequency = frequency;
+    this.volume = audioCtx.createGain();
+    this.volume.connect(audioCtx.destination);
+    this.panNode = audioCtx.createStereoPanner();
+    this.panNode.connect(this.volume);
+
+    this.oscillator = audioCtx.createOscillator();
+    this.oscillator.type = 'sine';
+    this.oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+    this.oscillator.connect(this.panNode);
+
+    this.isPlaying = false;
+  }
+
+  play(volume, ear) {
+    if (!this.isPlaying) {
+      this.oscillator.start();
+      this.isPlaying = true;
+    }
+
+    this.panNode.pan.setValueAtTime(ear === 'left' ? -1: 1, audioCtx.currentTime);
+    this.volume.gain.value = volume;
+  }
+
+  stop() {
+    this.volume.gain.value = 0;
+  }
+}
 
 function randomInArray(array) {
   return array[Math.floor(Math.random()*array.length)];
 }
 
-var sounds = {
-  dog: new Howl({ src: ['../assets/samples/327666__juan-merie-venter__dog-bark.wav'] }),
-  cow: new Howl({ src: ['../assets/samples/58277__benboncan__cow.wav'] })
-}
-
-const frequencies = [
-  250,
-  500,
-  1000,
-  2000,
-  4000,
-  6000,
-  8000,
-  10000
+const soundsDef = [
+  {type: 'frequency', frequency: 250, id: 250, node: new FrequencyNode(250)},
+  {type: 'frequency', frequency: 500, id: 500, node: new FrequencyNode(500)},
+  {type: 'frequency', frequency: 1000, id: 1000, node: new FrequencyNode(1000)},
+  {type: 'frequency', frequency: 2000, id: 2000, node: new FrequencyNode(2000)},
+  {type: 'frequency', frequency: 4000, id: 4000, node: new FrequencyNode(4000)},
+  {type: 'frequency', frequency: 6000, id: 6000, node: new FrequencyNode(6000)},
+  {type: 'frequency', frequency: 8000, id: 8000, node: new FrequencyNode(8000)},
+  {type: 'frequency', frequency: 10000, id: 10000, node: new FrequencyNode(1000)},
+  //{type: 'sound', frequency: 0, id: 'dog', buffer: new Howl({ src: ['../assets/samples/327666__juan-merie-venter__dog-bark.wav'] })},
+  //{type: 'sound', frequency: 0, id: 'cow', buffer: new Howl({ src: ['../assets/samples/58277__benboncan__cow.wav'] })}
 ];
 
-function getRandomInt() {
-  return parseInt(Math.random() * 10);
-}
+const labels = soundsDef.map(d => d.id || d.frequency);
 
 Howler.volume(0.1);
 
@@ -36,21 +64,19 @@ var app = new Vue({
   el: '#app',
   data: {
     finished: false,
-    //leftValues: new Array(Object.keys(sounds).length).fill(0),
-    //rightValues: new Array(Object.keys(sounds).length).fill(0),
-    leftValues: new Array(frequencies.length).fill(0),
-    rightValues: new Array(frequencies.length).fill(0),
+    leftValues: new Array(soundsDef.length).fill(0),
+    rightValues: new Array(soundsDef.length).fill(0),
     results: [],
     currentEar: 'left',
     currentTest: {},
     currentVolume: 0,
     currentPanning: 0,
     datacollection: {},
-    options: {
+    optionsChart: {
       responsive: true,
       title: {
         display: true,
-        text: 'Audiogram'
+        text: 'Frequencies audiogram'
       },
       legend: {
         display: false
@@ -72,53 +98,15 @@ var app = new Vue({
   },
   methods: {
     init: function () {
-// create Oscillator node
-var oscillator = audioCtx.createOscillator();
-
-oscillator.type = 'sine';
-
-oscillator.frequency.setValueAtTime(250, audioCtx.currentTime); // value in hertz
-oscillator.connect(audioCtx.destination);
-oscillator.start();
-
-Object.keys(frequencies).forEach(id => {
-  this.results.push({
-    id: id,
-    finished: false,
-    left: {
-      volume: {
-        min: 0,
-        max: 1,
-        current: 0.5,
-        prevCorrect: null
-      },
-      finished: false
-    },
-    right: {
-      volume: {
-        min: 0,
-        max: 1,
-        current: 0.5,
-        prevCorrect: null
-      },
-      finished: false
-    }
-  });
-});
-
-  return;
-
-      Object.keys(sounds).forEach(id => {
-        let sound = sounds[id];
+      soundsDef.forEach(definition => {
         this.results.push({
-          id: id,
+          definition: definition,
           finished: false,
           left: {
             volume: {
               min: 0,
               max: 1,
-              current: 0.5,
-              prevCorrect: null
+              current: 0.5
             },
             finished: false
           },
@@ -126,8 +114,7 @@ Object.keys(frequencies).forEach(id => {
             volume: {
               min: 0,
               max: 1,
-              current: 0.5,
-              prevCorrect: null
+              current: 0.5
             },
             finished: false
           }
@@ -168,7 +155,7 @@ Object.keys(frequencies).forEach(id => {
       let earTest = this.currentTest.earTest;
 
       this.datacollection = {
-        labels: Object.keys(sounds),
+        labels: labels,
         datasets: [
           {
             label: 'Left',
@@ -191,8 +178,8 @@ Object.keys(frequencies).forEach(id => {
       };
 
       let dataset = this.currentTest.ear === 'left' ? this.leftValues : this.rightValues;
-      var indexSound = Object.keys(sounds).indexOf(this.currentTest.test.id);
-      dataset[indexSound] = earTest.volume.current;
+      //var indexSound = labels.findIndex(d => d.frequency === indexOf(this.currentTest.test.id);
+      //dataset[indexSound] = earTest.volume.current;
 
       if (earTest.volume.max - earTest.volume.min <= 0.02) {
         earTest.finished = true;
@@ -201,20 +188,27 @@ Object.keys(frequencies).forEach(id => {
         return;
       }
 
-      let sound = sounds[this.currentTest.test.id];
-      let soundRef = sound.play();
-      this.currentTest.soundRef = soundRef;
+      if (this.currentTest.test.definition.type === "frequency") {
+        this.currentTest.test.definition.node.play(this.currentTest.earTest.volume.current, this.currentTest.ear);
+      } else {
+        let soundRef = sound.play();
+        this.currentTest.soundRef = soundRef;
+
+        sound.volume(this.currentTest.earTest.volume.current, soundRef);
+        sound.pos(this.currentTest.ear === 'right' ? 5 : -5, 0, 0, soundRef);
+      }
 
       this.currentVolume = parseInt(this.currentTest.earTest.volume.current * 100);
       this.currentPanning = this.currentTest.ear === 'right' ? 1 : -1;
-
-      sound.volume(this.currentTest.earTest.volume.current, soundRef);
-      sound.pos(this.currentTest.ear === 'right' ? 5 : -5, 0, 0, soundRef);
     },
     stopCurrentSound: function () {
-      let sound = sounds[this.currentTest.test.id];
-      let soundRef = this.currentTest.soundRef;
-      sound.stop(soundRef);
+      if (this.currentTest.test.definition.type === "frequency") {
+        this.currentTest.test.definition.node.stop();
+      } else {
+        let sound = sounds[this.currentTest.test.id];
+        let soundRef = this.currentTest.soundRef;
+        sound.stop(soundRef);
+      }
     },
     computeMinMax: function () {
       let earTest = this.currentTest.earTest;

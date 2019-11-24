@@ -22,12 +22,11 @@
         <button v-on:click="canHear">Oye</button>
         {{leftValues}}
         {{rightValues}}
-        <pre>{{results}}</pre>
         <pre>{{currentTest}}</pre>
       </div>
       <div style="display:block;width: 400px; height: 200px">
           <bubble-chart :chart-data="datacollection"
-          :options="options"></bubble-chart>
+            :options="optionsChart"></bubble-chart>
       </div>
     </div>
     <script src="bundle.js" async defer></script>
