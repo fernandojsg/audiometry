@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+  <html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app" style="display: flex">
+      <div>
+        <div v-if="finished">
+          <h1>FINISHED!</h1>
+        </div>
+        <button v-on:click="init">init</button>
+        volume <input v-model="currentVolume" type="range" min="1" max="100">
+        panning <input v-model="currentPanning" type="range" min="-1" max="1">
+        <button v-on:click="cannotHear">No oye</button>
+        <button v-on:click="canHear">Oye</button>
+        {{leftValues}}
+        {{rightValues}}
+        <pre>{{results}}</pre>
+        <pre>{{currentTest}}</pre>
+      </div>
+      <div style="display:block;width: 400px; height: 200px">
+          <bubble-chart :chart-data="datacollection"
+          :options="options"></bubble-chart>
+      </div>
+    </div>
+    <script src="bundle.js" async defer></script>
+  </body>
+</html>
