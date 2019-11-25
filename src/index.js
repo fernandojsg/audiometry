@@ -72,17 +72,17 @@ const soundsDef = [
   {type: 'frequency', frequency: 8000, id: 8000, node: new FrequencyNode(8000)},
   {type: 'frequency', frequency: 10000, id: 10000, node: new FrequencyNode(1000)},
 
-  {type: 'sound', frequency: 0, id: 'cat', buffer: new Howl({ src: ['../assets/samples/110011__tuberatanka__cat-meow.wav'], loop: true })},
-  {type: 'sound', frequency: 0, id: 'claxon', buffer: new Howl({ src: ['../assets/samples/185730__enric592__claxon.wav'], loop: true })},
-  {type: 'sound', frequency: 0, id: 'pianomelody', buffer: new Howl({ src: ['../assets/samples/186942__lemoncreme__piano-melody.wav'], loop: true })},
-  {type: 'sound', frequency: 0, id: 'dog', buffer: new Howl({ src: ['../assets/samples/327666__juan-merie-venter__dog-bark.wav'], loop: true })},
-  {type: 'sound', frequency: 0, id: 'blackbird', buffer: new Howl({ src: ['../assets/samples/34074__dobroide__20070415-funny-blackbird.wav'], loop: true })},
-  {type: 'sound', frequency: 0, id: 'nightingale', buffer: new Howl({ src: ['../assets/samples/34112__dobroide__20070418-nightingale.wav'], loop: true })},
-  {type: 'sound', frequency: 0, id: 'alarm', buffer: new Howl({ src: ['../assets/samples/34159__dobroide__20070424-alarm-coot-01.wav'], loop: true })},
-  {type: 'sound', frequency: 0, id: 'rooster', buffer: new Howl({ src: ['../assets/samples/439472__inspectorj__rooster-calling-close-a.wav'], loop: true })},
-  {type: 'sound', frequency: 0, id: 'pianjingle', buffer: new Howl({ src: ['../assets/samples/460261__ddmyzik__piano-jingle.wav'], loop: true })},
-  {type: 'sound', frequency: 0, id: 'cow', buffer: new Howl({ src: ['../assets/samples/58277__benboncan__cow.wav'], loop: true })},
-  {type: 'sound', frequency: 0, id: 'bear', buffer: new Howl({ src: ['../assets/samples/70333__mrbubble110__bear-roar.wav'], loop: true })}
+  {type: 'sound', frequency: 0, id: 'cat', buffer: new Howl({ src: ['assets/samples/110011__tuberatanka__cat-meow.wav'], loop: true })},
+  {type: 'sound', frequency: 0, id: 'claxon', buffer: new Howl({ src: ['assets/samples/185730__enric592__claxon.wav'], loop: true })},
+  {type: 'sound', frequency: 0, id: 'pianomelody', buffer: new Howl({ src: ['assets/samples/186942__lemoncreme__piano-melody.wav'], loop: true })},
+  {type: 'sound', frequency: 0, id: 'dog', buffer: new Howl({ src: ['assets/samples/327666__juan-merie-venter__dog-bark.wav'], loop: true })},
+  {type: 'sound', frequency: 0, id: 'blackbird', buffer: new Howl({ src: ['assets/samples/34074__dobroide__20070415-funny-blackbird.wav'], loop: true })},
+  {type: 'sound', frequency: 0, id: 'nightingale', buffer: new Howl({ src: ['assets/samples/34112__dobroide__20070418-nightingale.wav'], loop: true })},
+  {type: 'sound', frequency: 0, id: 'alarm', buffer: new Howl({ src: ['assets/samples/34159__dobroide__20070424-alarm-coot-01.wav'], loop: true })},
+  {type: 'sound', frequency: 0, id: 'rooster', buffer: new Howl({ src: ['assets/samples/439472__inspectorj__rooster-calling-close-a.wav'], loop: true })},
+  {type: 'sound', frequency: 0, id: 'pianjingle', buffer: new Howl({ src: ['assets/samples/460261__ddmyzik__piano-jingle.wav'], loop: true })},
+  {type: 'sound', frequency: 0, id: 'cow', buffer: new Howl({ src: ['assets/samples/58277__benboncan__cow.wav'], loop: true })},
+  {type: 'sound', frequency: 0, id: 'bear', buffer: new Howl({ src: ['assets/samples/70333__mrbubble110__bear-roar.wav'], loop: true })}
 
 ];
 
