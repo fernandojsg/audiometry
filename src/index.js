@@ -5,7 +5,7 @@ const MAIN_VOLUME = 0.05;
 const INITIAL_VOLUME = 0.5;
 
 const MIN_VOLUME = 0.05;
-const MAX_VOLUME = 0.1;
+const MAX_VOLUME = 1;
 
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 var mainVolume = audioCtx.createGain();
