@@ -15,20 +15,31 @@
         <div v-if="finished">
           <h1>FINISHED!</h1>
         </div>
-        <button v-on:click="init">init</button>
-        volume <input v-model="currentVolume" type="range" min="1" max="100">
-        panning <input v-model="currentPanning" type="range" min="-1" max="1">
-        <button v-on:click="cannotHear">No oye</button>
-        <button v-on:click="canHear">Oye</button>
-        {{leftValues}}
-        {{rightValues}}
-        <pre>{{currentTest}}</pre>
+        <button v-on:click="init">START</button>
+
+        <button v-on:click="cannotHear">can NOT hear</button>
+        <button v-on:click="canHear">can hear</button>
+        <div>
+          <ul v-if="currentTest.test">
+            <li>test: <b>{{currentTest.test.definition.id}} ({{currentTest.ear}} - {{currentVolume}}%)</b></li>
+            <li>volume <input readonly v-model="currentVolume" type="range" min="1" max="100"></li>
+            <li>panning <input readonly v-model="currentPanning" type="range" min="-1" max="1"></li>
+        </ul>
+        </div>
       </div>
+      Progress: {{progress}}% (Steps: {{steps}})
       <div style="display:block;width: 400px; height: 200px">
           <bubble-chart :chart-data="datacollection"
             :options="optionsChart"></bubble-chart>
+            <!--<div>
+                {{leftValues}}
+                <br/>
+                {{rightValues}}
+              </div>
+            -->
       </div>
-    </div>
+      <button v-on:click="output">OUTPUT</button>
+  </div>
     <script src="bundle.js" async defer></script>
   </body>
 </html>

@@ -1,4 +1,5 @@
 import { Line, mixins } from 'vue-chartjs'
+import chartjsPluginAnnotation from "chartjs-plugin-annotation";
 const { reactiveProp } = mixins;
 
 export default {
